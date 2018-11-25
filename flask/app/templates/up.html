@@ -1,0 +1,23 @@
+<html>
+
+<body>
+    <div style="width: 85%;margin-left: 2%;">
+
+        <form action="" method="post" name="" enctype="multipart/form-data">
+            {{form.hidden_tag()}}
+            {{ form.file(required="required") }}
+            {{ form.submit }}
+        </form>
+
+        {% if ds %}
+        {% for d in ds%}
+        <p><img src="data:;base64,{{d.image}}" /></p>
+        {% endfor %}
+        {% endif %}
+
+    </div>
+
+</body>
+
+
+</html>
