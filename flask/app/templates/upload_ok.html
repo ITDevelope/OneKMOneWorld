@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <h1>您的上传结果</h1>
+    <span>{{msg}}</span>
+    <form action="" enctype='multipart/form-data' method='POST'>
+        <input type="file" name="file" style="margin-top:20px;"/>
+        <br>
+        <i>请输入你的标签（美食、风景、科幻）：</i>
+        <input type="text" class="txt_input" name="name"  value="" style="margin-top:10px;"/>
+        <input type="submit" value="上传" class="button-new" style="margin-top:15px;"/>
+    </form>
+    <h4>您的标签是：{{userinput}}！</h4>
+    <img src="{{ url_for('static', filename= './images/avatars/user-01.jpg') }}" width="400" height="400" alt="好漂亮的图文"/>   <!-- 测试用的图片 -->
+    <div class="respond">
+        <h3>我想说</h3>
+        <form name="file" id="contactForm" method="post" action="">
+
+            <div class="message form-field">
+                <h2>{{Message}}</h2>
+            </div>
+
+
+        </form> <!-- Form End -->
+
+    </div> <!-- Respond end -->
+
+
+</body>
+</html>
+
+<!-- 此为上传成功显示页面，在测试中用到 -->

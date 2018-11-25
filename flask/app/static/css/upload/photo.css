@@ -1,0 +1,5 @@
+/*调整相机位置*/
+.pos{
+	position: relative;
+	top: -100px;
+}
