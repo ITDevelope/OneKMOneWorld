@@ -7,7 +7,7 @@
    <!--- basic page needs
    ================================================== -->
    <meta charset="utf-8">
-	<title>Abstract</title>
+	<title>{{author.name}}</title> <!-- 作者名 -->
 	<meta name="description" content="">  
 	<meta name="author" content="">
 
@@ -26,11 +26,17 @@
 
    <!-- script
    ================================================== -->
-	<script src="../static/js/modernizr.js"></script>
-	<script src="../static/js/pace.min.js"></script> 
-	<script src="../static/js/jquery-2.1.3.min.js"></script>
-	<script src="../static/js/plugins.js"></script>
-	<script src="../static/js/main.js"></script>
+	<script src="{{url_for('static',filename='js/modernizr.js')}}"></script>
+	<script src="{{url_for('static',filename='js/pace.min.js')}}"></script> 
+	<script src="{{url_for('static',filename='js/jquery-2.1.3.min.js')}}"></script>
+	<script src="{{url_for('static',filename='js/plugins.js')}}"></script>
+	<script src="{{url_for('static',filename='js/main.js')}}"></script>
+	<script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+	<script src="{{url_for('static',filename='js/self/jquery.scrollzer.min.js')}}"></script>
+	<script src="{{url_for('static',filename='js/self/jquery.scrolly.min.js')}}"></script>
+	<script src="{{url_for('static',filename='js/self/skel.min.js')}}"></script>
+	<script src="{{url_for('static',filename='js/self/util.js')}}"></script>
+	<script src="{{url_for('static',filename='js/self/main_person.js')}}"></script>
 
    <!-- favicons
 	================================================== -->
@@ -38,9 +44,6 @@
 	<link rel="icon" href="favicon.ico" type="image/x-icon">
 
 </head>
-
-<body id="top">
-
 	<!-- header 
    ================================================= -->
    <header class="short-header">   
@@ -82,7 +85,7 @@
 				</ul>
 	  </nav> <!-- end main-nav-wrap -->
 
-			<div class="search-wrap">
+<div class="search-wrap">
 				
 				<form role="search" method="get" class="search-form" action="#">
 					<label>
@@ -104,110 +107,139 @@
    	</div>     		
    	
    </header> <!-- end header -->
+<body>
+	<section id="header">
+		<header>
+		<span class="image avatar"><img src="{{url_for('static',filename=favicon.ico)}}" alt="" /></span>
+		<h1 id="logo">{{author.name}}</h1>
+		</header>
+		<nav id="nav">
+			<ul>
+				<li><a href="#one" class="active">我的昵称</a></li>
+				<li><a href="#two">个性签名</a></li>
+				<li><a href="#three">我的作品</a></li>
+				<li><a href="#four">我的收藏</a></li>
+				<li><a href="#five">消息管理</a></li>
+				{% if change %}
+				<li><a href="#six">修改信息</a></li>
+				{% endif %}
+			</ul>
+		</nav>
+	</section>
+	<div id="wrapper">
+		<div id="main">
+			<section id="one">
+				<div class="container">
+					<h3>我的昵称</h3>
+					<br>
+					<p>{{author.nickname}}</p>
+				</div>
+			</section>
+			<section id="two">
+				<div class="container">
+					<h3>个性签名</h3>
+					<br>
+					<p>{{author.sign}}</p>
+				</div>
+			</section>
+
+			<section id="three">
+				<div class="container">
+					<h3>我的作品</h3>
+					<br>
+					<div class="features">
+						{% for blog in blogs %}
+						<article>
+							<a href="{{url_for('view',blog_id=blog.id)}}" class="image"><img src="{{url_for('static',filename=blog.imag)}}" alt="" /></a>
+							<div class="inner" style="word-wrap:break-word">
+								<a href="{{url_for('view',blog_id=blog.id)}}"><h4>{{blog.title}}</h4></a>
+								<p>{{blog.text | truncate(length=100)}}</p>
+							</div>
+						</article>
+						{% endfor %}
+	
+					</div>
+				</div>
+			</section>
 
 
-   <!-- content
-   ================================================== -->
-    <section id="content-wrap" class="site-page">
-		<div class="row">
-		<!-- Profile info -->
-<div class="col-sm-5 col-md-3 col-md-offset-1">
-				<div class="img-profile text-center">
-					<img src="../static/images/default.jpg" class="img-responsive" alt="John Doe">
-						<div class="profile-name">mxp
+			<section id="four">
+			<div class="container">
+					<h3>我的收藏</h3>
+					<br>
+					<div class="features">
+						<div class="post-content">
+     						<div class="post-date">{{ moment(post.timestamp).fromNow() }}</div>
+     							<div class="post-save">
+     							{% if current_user.is_authenticated %}
+          						{% if not current_user.is_saving(post) %}
+          					<a href="{{ url_for('.save', postid=post.id) }}" class="btn btn-danger btn-xs">Save</a>
+          					{% else %}
+         				 	<a href="{{ url_for('.unsave', postid=post.id) }}" class="btn btn-danger btn-xs">Unsave</a>
+       				  		{% endif %}
+     						{% endif %}
+     							</div>
 						</div>
-				</div>
-
-				<h4 class="title">个人信息</h4>
-				<div class="line-dec"></div>
-
-				<ul class="list-group">
-					<li class="list-group-item"><b>我的账户</b> $20</li>
-					<li class="list-group-item"><b>我的昵称</b> 浮生若梦</li>
-					<li class="list-group-item"><b>我的邮箱</b> johndoe@example.com</li>
-					<li class="list-group-item"><b>我的积分</b> $150</li>
-					<li class="list-group-item"><strong>我的足迹</strong></li>
-				</ul>
-
-				<a href="#" class="btn btn-block btn-success">修改信息</a>
+					</div>
 			</div>
+			</section>
 
-<div class="col-sm-7 col-md-4">
-				<h4 class="title">我的作品</h4>
-				<div class="line-dec"></div>
 
-				<div class="grid">
-<div class="grid-item"> </div>
-
-				<div class="grid-item">
-					<img src="../static/images/your-photos/1.jpeg.jpg" class="img-responsive" alt="your-photo">
+			<section id="five">
+				<div class="container">
+					<h3>消息管理</h3>
+					<p>{{message}}</p>
 				</div>
 
-				<div class="grid-item">
-					<img src="../static/images/your-photos/2.jpeg.jpg" class="img-responsive" alt="your-photo">
-				</div>
-
-				<div class="grid-item">
-					<img src="../static/images/your-photos/4.jpeg.jpg" class="img-responsive" alt="your-photo">
-				</div>
-  </div>
-			<form id="upload-form" action="upload.php" method="post" enctype="multipart/form-data" >
-				<input type="file" id="upload" name="upload" /> <br />
-				<input type="submit" value="upload" />
-			</form>
-		</div>
-<div class="col-sm-12 col-md-4">
-  <h4 class="title">我的收藏</h4>
-  <div class="line-dec"></div>
-  <!-- photo list item -->
-  <div class="media photo-list"> <a href="#"> <img src="../static/images/photos/1.jpg" class="img-responsive margin-bottom-20" alt="Last sale photo 1"> </a>
-    <div class="media-body">
-      <div class="row">
-        <!-- Description column -->
-        <div class="col-sm-8">
-          <h4 class="media-heading photo-list-title"> 山 </h4>
-        </div>
-        <!-- Price and actions -->
-        <div class="col-sm-4">
-          <h4 class="media-heading photo-list-price"> 2000人 <small>收藏</small> </h4>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- photo list item -->
-  <div class="media photo-list"> <a href="#"> <img src="../static/images/photos/1.jpg" class="img-responsive margin-bottom-20" alt="Last sale photo 2"> </a>
-    <div class="media-body">
-      <div class="row">
-        <!-- Description column -->
-        <div class="col-sm-8">
-          <h4 class="media-heading photo-list-title"> 阿尔卑斯山 </h4>
-        </div>
-        <!-- Price and actions -->
-        <div class="col-sm-4">
-          <h4 class="media-heading photo-list-price"> 1000人 <small>收藏</small> </h4>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- end row -->
 		
-   </section> <!-- end content -->
+	</section>
 
-   
-    
-   <footer>
+			{% if change %}
+			<section id="six">
+				<div class="container">
+					<h3>修改信息</h3>
+					<form method="post" action="#" enctype='multipart/form-data'>
+						<div class="row uniform">
+							<div class="6u 12u(xsmall)"><input type="text" name="nickname" id="nickname" placeholder="昵称" /></div>
+							<div class="6u 12u(xsmall)"><input type="email" name="email" id="email" placeholder="Email" /></div>
+						</div>
+						<div class="row uniform">
+							<div class="12u"><textarea name="sign" id="message" placeholder="Sign" rows="6"></textarea></div>
+						</div>
+						<div class="row uniform">
+							<div class="12u"><input type="file" name="icon"></div>
+						</div>
 
-   	<div class="footer-main">
+						<div class="row uniform">
+							<div class="12u">
+								<ul class="actions">
+									<li><input type="submit" class="special" value="Submit" /></li>
+									<li><input type="reset" value="Reset Form" /></li>
+								</ul>
+							</div>
+						</div>
+					</form>
+				</div>
+			</section>
+			{% endif %}
+
+</body>
+
+
+   <!-- footer
+   ================================================== -->
+<footer>
+
+   	<div class="footer-main col-md-10 col-md-offset-1">
 
    		<div class="row">  
 
-	      	<div class="col-four tab-full mob-full footer-info">            
+	      	<div class="col-three tab-full mob-full footer-info">            
 
 	            <h4>About Our Site</h4>
 
 	               <p>
-		          	Lorem ipsum Ut velit dolor Ut labore id fugiat in ut fugiat nostrud qui in dolore commodo eu magna Duis cillum dolor officia esse mollit proident Excepteur exercitation nulla. Lorem ipsum In reprehenderit commodo aliqua irure labore.
+		          	Lorem ipsum Ut velit dolor Ut labore .
           	  </p>
 
 	      </div> <!-- end footer-info -->
@@ -287,10 +319,5 @@
    <div id="preloader"> 
     	<div id="loader"></div>
    </div> 
-
-
-
-
-</body>
 
 </html>
