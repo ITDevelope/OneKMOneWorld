@@ -1,9 +1,5 @@
-﻿<<<<<<< HEAD
-# OneKMOneWorld
+﻿# OKM开发  
+  
 
-一公里内开发
-
-=======
-
-OneKMOneWorld「一公里内」
->>>>>>> master
+**开发者笔记**
+*更换了整体框架
