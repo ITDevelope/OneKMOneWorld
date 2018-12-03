@@ -13,3 +13,6 @@ from app import db
 from .models import User, Client, Record, Share, Photo, Video
 # 记得在config.py修改数据库配置,同时在终端使用db.create_all()命令创建表
 
+@app.route('/index') #主页
+def index():
+    return render_template('index.html')

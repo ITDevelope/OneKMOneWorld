@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+
+<html class="no-js" lang="cn">
+
+
+<head>
+
+	<meta charset="utf-8">
+	<title>OKM</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<!--
+		<link rel="shortcut icon" href="{{url_for('static',filename='images/shojo.ico')}}" />
+	-->
+	<!--手机适配-->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+	<!--css-->
+	<link rel="stylesheet" href="{{url_for('static',filename='css/base.css')}}">
+	<link rel="stylesheet" href="{{url_for('static',filename='css/vendor.css')}}">
+	<link rel="stylesheet" href="{{url_for('static',filename='css/main.css')}}">
+
+
+	<!--js-->
+	<script src="{{url_for('static',filename='js/modernizr.js')}}"></script>
+	<script src="{{url_for('static',filename='js/pace.min.js')}}"></script>
+	{% with messages = get_flashed_messages() %}
+	{% if messages %}
+	{% for message in messages %}
+	<script type="text/javascript">
+		alert('{{message}}')
+	</script>
+	{% endfor %}
+	{% endif %}
+	{% endwith %}
+
+</head>
+
+
+<body id="top">
+
+	<header class="short-header">
+		<div class="gradient-block"></div>
+
+		<div class="row header-content">
+
+
+			<nav id="main-nav-wrap">
+				<ul class="main-navigation sf-menu">
+					<li><a href="#">发现周边</a></li>
+					<li><a href="#">地图探索</a></li>
+					<li><a href="#">个人主页</a></li>
+				</ul>
+			</nav>
+
+
+
+
+			<!--搜索框展开-->
+			<div class="search-wrap">
+
+				<form role="search" method="get" class="search-form" action="/index/search">
+					<label>
+						<span class="hide-content">Search for:</span>
+						<input type="search" class="search-field" placeholder="Type Your Keywords" value="" name="search_info" title="Search for:"
+						 autocomplete="off">
+					</label>
+					<input type="submit" class="search-submit" value="Search">
+				</form>
+
+				<a href="#" id="close-search" class="close-btn">Close</a>
+
+			</div>
+
+			<!--图标-->
+			<div class="triggers">
+				<a class="search-trigger" href="#"><i class="fa fa-search"></i></a>
+
+				<a class="menu-toggle" href="#"><span>Menu</span></a>
+
+			</div>
+
+		</div>
+
+	</header>
+
+	{% block content %}{% endblock %}
+	<!--footer
+		
+	<footer>
+
+		<div class="footer-main">
+
+			<div class="row">
+
+				<div class="col-four tab-full mob-full footer-info">
+					<h4>联系我</h4>
+					<ul>
+						<li><a href="mailto:dheming@ruc.edu.cn">Email</a></li>
+					</ul>
+				</div>
+
+				<div class="col-four tab-1-3 mob-1-2 site-links">
+					<h4>项目源码</h4>
+					<ul>
+						<li><a href="https://github.com/Heming0425/basic_blog">Github</a></li>
+					</ul>
+				</div>
+
+				<div class="col-four tab-1-3 mob-1-2 social-links">
+					<h4>外部链接</h4>
+					<ul>
+						<li><a href="https://www.bilibili.com/bangumi/media/md1759/?from=search&seid=378431983337594629">Bilibili</a></li>
+						<li><a href="https://zh.moegirl.org/文学少女系列">萌娘百科</a></li>
+						<li><a href="http://www.bungakushoujo.jp/">文学少女官网</a></li>
+					</ul>
+				</div>
+
+			</div>
+		</div>
+	-->
+
+		<!--copyright-->
+		<div class="footer-bottom">
+			<div class="row">
+
+				<div class="col-twelve">
+					<!--返回顶层-->
+					<div id="go-top">
+						<a class="smoothscroll" title="Back to Top" href="#top"><i class="icon icon-arrow-up"></i></a>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+	</footer>
+
+	<div id="preloader">
+		<div id="loader"></div>
+	</div>
+
+	<!--js-->
+	<script src="{{url_for('static',filename='js/jquery-2.1.3.min.js')}}"></script>
+	<script src="{{url_for('static',filename='js/plugins.js')}}"></script>
+	<script src="{{url_for('static',filename='js/jquery.appear.js')}}"></script>
+	<script src="{{url_for('static',filename='js/main.js')}}"></script>
+</body>
+
+</html>
