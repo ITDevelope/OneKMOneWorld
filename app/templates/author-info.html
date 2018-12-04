@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!DOCTYPE HTML>
+<html>
+<!-- 个人主页 -->
+<head>
+	<title>{{username}}</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" href="{{url_for('static',filename='css/main_person.css')}}" />
+
+</head>
+
+<body>
+
+	<section id="header">
+		<header>
+			<span class="image avatar"><img src="{{url_for('static',filename=author.icon)}}" alt="" /></span>
+			<h1 id="logo">{{username}}</h1>
+		</header>
+		<nav id="nav">
+			<ul>
+				<li><a href="#one" class="active">我的昵称</a></li>
+				<li><a href="#two">我的签名</a></li>
+				<li><a href="#three">我的作品</a></li>
+				<li><a href="#four">我的收藏</a></li>
+				<li><a href="#five">我的消息</a></li>
+				{% if change %}
+				<li><a href="#six">修改信息</a></li>
+				{% endif %}
+			</ul>
+		</nav>
+	</section>
+
+	<div id="wrapper">
+		<div id="main">
+			<section id="one">
+				<div class="container">
+					<h3>我的昵称</h3>
+					<br>
+					<p>{{username}}</p>
+				</div>
+			</section>
+
+			<section id="two">
+				<div class="container">
+					<h3>我的签名</h3>
+					<br>
+					<p>{{sign}}</p>
+				</div>
+			</section>
+
+			<section id="three">
+				<div class="container">
+					<h3>我的作品</h3>
+					<br>
+					<div class="features">
+						{% for blog in blogs %}
+						<article>
+							<a href="{{url_for('view',blog_id=blog.id)}}" class="image"><img src="{{url_for('static',filename=blog.imag)}}" alt="" /></a>
+							<div class="inner" style="word-wrap:break-word">
+								<a href="{{url_for('view',blog_id=blog.id)}}"><h4>{{blog.title}}</h4></a>
+								<p>{{blog.text | truncate(length=100)}}</p>
+							</div>
+						</article>
+						{% endfor %}
+	
+					</div>
+				</div>
+			</section>
+
+			<section id="four">
+				<div class="container">
+					<h3>我的收藏</h3>
+					<br>
+					<div class="features">
+						{% for blog in blogs %}
+						<article>
+							<a href="{{url_for('view',blog_id=blog.id)}}" class="image"><img src="{{url_for('static',filename=blog.imag)}}" alt="" /></a>
+							<div class="inner" style="word-wrap:break-word">
+								<a href="{{url_for('view',blog_id=blog.id)}}"><h4>{{blog.title}}</h4></a>
+								<p>{{blog.text | truncate(length=100)}}</p>
+							</div>
+						</article>
+						{% endfor %}
+	
+					</div>
+				</div>
+			</section>
+
+
+			{% if change %}
+			<section id="six">
+				<div class="container">
+					<h3>修改信息</h3>
+					<form method="post" action="#" enctype='multipart/form-data'>
+						<div class="row uniform">
+							<div class="6u 12u(xsmall)"><input type="text" name="nickname" id="name" placeholder="昵称" /></div>
+							<div class="6u 12u(xsmall)"><input type="email" name="email" id="email" placeholder="Email" /></div>
+						</div>
+						<div class="row uniform">
+							<div class="12u"><textarea name="sign" id="message" placeholder="Sign" rows="6"></textarea></div>
+						</div>
+						<div class="row uniform">
+							<div class="12u"><input type="file" name="icon"></div>
+						</div>
+
+						<div class="row uniform">
+							<div class="12u">
+								<ul class="actions">
+									<li><input type="submit" class="special" value="Submit" /></li>
+									<li><input type="reset" value="Reset Form" /></li>
+								</ul>
+							</div>
+						</div>
+					</form>
+				</div>
+			</section>
+			{% endif %}
+			<section id="footer">
+				<div class="container">
+					<ul class="copyright">
+						<li>&copy; 一公里内</li>
+					</ul>
+				</div>
+			</section>
+
+		</div>
+
+		<script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+		<script src="{{url_for('static',filename='js/jquery.scrollzer.min.js')}}"></script>
+		<script src="{{url_for('static',filename='js/jquery.scrolly.min.js')}}"></script>
+		<script src="{{url_for('static',filename='js/skel.min.js')}}"></script>
+		<script src="{{url_for('static',filename='js/util.js')}}"></script>
+		<script src="{{url_for('static',filename='js/main_person.js')}}"></script>
+
+</body>
+
+</html>
+{% endblock %}
