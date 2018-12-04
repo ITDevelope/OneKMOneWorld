@@ -17,7 +17,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:123456@localhost:3
 @app.route('/index') #主页
 def index():
     return render_template('index.html')
-
-@app.route('/author/<authoruid>', methods=['GET', 'POST']) 
-def authorinfo():
+@app.route('/author')
+def author():
 	return render_template('author-info.html')

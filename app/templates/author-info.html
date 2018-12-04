@@ -8,7 +8,16 @@
 	<title>{{username}}</title>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<link rel="stylesheet" href="{{url_for('static',filename='css/main_person.css')}}" />
+	<link rel="stylesheet" href="../static/css/info.css" />
+
+<!-- script -->
+		<script src="../static/js/author/jquery-2.1.3.min.js"></script>
+		<script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+		<script src="../static/js/author/jquery.scrollzer.min.js"></script>
+		<script src="../static/js/author/jquery.scrolly.min.js"></script>
+		<script src="../static/js/author/skel.min.js"></script>
+		<script src="../static/js/author/util.js"></script>
+		<script src="../static/js/author/main_person.js"></script>
 
 </head>
 
@@ -16,8 +25,8 @@
 
 	<section id="header">
 		<header>
-			<span class="image avatar"><img src="{{url_for('static',filename=author.icon)}}" alt="" /></span>
-			<h1 id="logo">{{username}}</h1>
+			<span class="image avatar">{{user.icon}}</span> <!-- 用户头像 --> 
+			<h1 id="logo">{{username}}</h1> <!-- 用户昵称 -->
 		</header>
 		<nav id="nav">
 			<ul>
@@ -26,8 +35,9 @@
 				<li><a href="#three">我的作品</a></li>
 				<li><a href="#four">我的收藏</a></li>
 				<li><a href="#five">我的消息</a></li>
+				<li><a href="#six">我的积分</a></li>
 				{% if change %}
-				<li><a href="#six">修改信息</a></li>
+				<li><a href="#seven">修改信息</a></li>
 				{% endif %}
 			</ul>
 		</nav>
@@ -56,12 +66,12 @@
 					<h3>我的作品</h3>
 					<br>
 					<div class="features">
-						{% for blog in blogs %}
+						{% for share in shares %}
 						<article>
-							<a href="{{url_for('view',blog_id=blog.id)}}" class="image"><img src="{{url_for('static',filename=blog.imag)}}" alt="" /></a>
+							<a href="{{url_for('view',share_id=share_id)}}" class="image"><img src="{{url_for('static',filename="")}}" alt="" /></a>
 							<div class="inner" style="word-wrap:break-word">
-								<a href="{{url_for('view',blog_id=blog.id)}}"><h4>{{blog.title}}</h4></a>
-								<p>{{blog.text | truncate(length=100)}}</p>
+								<a href="{{url_for('view',share_id=share_id)}}"><h4>{{}}</h4></a>
+								<p>{{share.text}}</p>
 							</div>
 						</article>
 						{% endfor %}
@@ -75,12 +85,12 @@
 					<h3>我的收藏</h3>
 					<br>
 					<div class="features">
-						{% for blog in blogs %}
-						<article>
-							<a href="{{url_for('view',blog_id=blog.id)}}" class="image"><img src="{{url_for('static',filename=blog.imag)}}" alt="" /></a>
+						{% for share in shares %}
+						<article> <!-- 收藏的图文 -->
+							<a href="{{url_for('view',share_id=share_id)}}" class="image"><img src="{{url_for('static',filename=)}}" alt="" /></a>
 							<div class="inner" style="word-wrap:break-word">
-								<a href="{{url_for('view',blog_id=blog.id)}}"><h4>{{blog.title}}</h4></a>
-								<p>{{blog.text | truncate(length=100)}}</p>
+								<a href="{{url_for('view',share_id=share_id)}}"></a>
+								<p>{{share.text}}</p> 
 							</div>
 						</article>
 						{% endfor %}
@@ -89,14 +99,32 @@
 				</div>
 			</section>
 
+			<section id="five">
+				<div class="container">
+					<h3>我的消息</h3>
+					<br>
+					<p>{{like}}</p> <!-- 点赞数量 -->
+				</div>
+			</section>
 
-			{% if change %}
+
 			<section id="six">
 				<div class="container">
+					<h3>我的积分</h3>
+					<br>
+					<p>{{score}}</p> 
+				</div>
+			</section>
+
+
+
+			<section id="seven">
+				<div class="container">
 					<h3>修改信息</h3>
+						{% if change %}
 					<form method="post" action="#" enctype='multipart/form-data'>
 						<div class="row uniform">
-							<div class="6u 12u(xsmall)"><input type="text" name="nickname" id="name" placeholder="昵称" /></div>
+							<div class="6u 12u(xsmall)"><input type="text" name="username" id="name" placeholder="昵称" /></div>
 							<div class="6u 12u(xsmall)"><input type="email" name="email" id="email" placeholder="Email" /></div>
 						</div>
 						<div class="row uniform">
@@ -114,26 +142,15 @@
 								</ul>
 							</div>
 						</div>
+
 					</form>
 				</div>
 			</section>
 			{% endif %}
-			<section id="footer">
-				<div class="container">
-					<ul class="copyright">
-						<li>&copy; 一公里内</li>
-					</ul>
-				</div>
-			</section>
+
 
 		</div>
 
-		<script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
-		<script src="{{url_for('static',filename='js/jquery.scrollzer.min.js')}}"></script>
-		<script src="{{url_for('static',filename='js/jquery.scrolly.min.js')}}"></script>
-		<script src="{{url_for('static',filename='js/skel.min.js')}}"></script>
-		<script src="{{url_for('static',filename='js/util.js')}}"></script>
-		<script src="{{url_for('static',filename='js/main_person.js')}}"></script>
 
 </body>
 
