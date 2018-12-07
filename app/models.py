@@ -108,11 +108,12 @@ class Share(db.Model):
     comment_count = db.Column(db.Integer)  # 评论数
     like_count = db.Column(db.Integer)  # 点赞数
     collected_count = db.Column(db.Integer)  # 被收藏次数
-    gps = db.Column(db.String(225))  # 位置信息
+    gps_lon = db.Column(db.Float(225))  # 经度
+    gps_lat = db.Column(db.Float(225)) # 纬度
     pid = db.Column(db.String(225))  # 照片id
     vid = db.Column(db.String(225))  # 视频id
 
-    def __init__(self, share_id, text, tag, share_time, view_count, comment_count, like_count, collected_count, gps, pid, vid):
+    def __init__(self, share_id, text, tag, share_time, view_count, comment_count, like_count, collected_count, gps_lon, gps_lat, pid, vid):
         self.share_id = share_id
         self.text = text
         self.tag = tag
@@ -121,7 +122,8 @@ class Share(db.Model):
         self.comment_count = comment_count
         self.like_count = like_count
         self.collected_count = collected_count
-        self.gps = gps
+        self.gps_lon = gps_lon
+        self.gps_lat = gps_lat
         self.pid = pid
         self.vid = vid
 
@@ -139,12 +141,14 @@ class Photo(db.Model):
 
     id = db.Column(db.Integer, unique=True)
     pid = db.Column(db.String(225), primary_key=True, unique=True)
-    psize = db.Column(db.String(225))  # 照片大小
+    psize_height = db.Column(db.Float(225))  # 照片长
+    psize_width = db.Column(db.Float(225)) # 照片宽
     purl = db.Column(db.String(225))  # 照片的url
 
-    def __init__(self, pid, psize, purl):
+    def __init__(self, pid, psize_height, psize_width, purl):
         self.pid = pid
-        self.psize = psize
+        self.psize_height = psize_height
+        self.psize_width = psize_width
         self.purl = purl
 
         db.create_all()

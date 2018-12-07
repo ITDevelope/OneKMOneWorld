@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block content %}
+
+<head>
+    <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
+    <style>
+        body{ 
+            text-align:center
+        }
+
+        #container{
+            margin:0 auto;
+            width:100%;
+            height:550px
+        }
+
+
+        .amap-icon img{
+            width: 25px;
+            height: 34px;
+        }
+    </style>
+</head>
+
+
+<div id="container"></div>
+<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.11&key=e4010aeb43c122cb70a78666c6d0d0ba"></script>
+<script type="text/javascript">
+    // 以用户为中心创建地图实例
+    var map = new AMap.Map("container", {
+        zoom: 13,
+        center: [{{user_location.self_lon}}, {{user_location.self_lat}}],
+        resizeEnable: true
+    });
+
+    // 循环添加图片
+    {% for share in shares %}
+    var startIcon = new AMap.Icon({
+        // 图标尺寸
+        size: new AMap.Size({{share.imgw}}, {{share.imgh}}),
+        // 图标的取图地址
+        image: '{{url_for('static',filename=share.img)}}',
+        // 图标所用图片大小
+        imageSize: new AMap.Size({{share.imgw}}, {{share.imgh}}),
+        // 图标取图偏移量
+        imageOffset: new AMap.Pixel(0, 0)
+    });
+
+    // 传入 marker
+    var startMarker = new AMap.Marker({
+        position: new AMap.LngLat({{share.gps_lon}}, {{share.gps_lat}}),
+        icon: startIcon,
+        offset: new AMap.Pixel(0, 0)
+    });
+
+    map.add(startMarker);
+    {% endfor %}
+
+</script>
+
+{% endblock %}
