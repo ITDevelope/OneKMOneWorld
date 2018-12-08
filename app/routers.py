@@ -45,13 +45,12 @@ def author(useruid):
     'img' : "images/1.jpg"
       } 
     shares = [{
-    'text':'这里真漂亮',
-    'collected_count':'20',
+    'text':'此次出行很开心 喜欢这种古镇的感觉 ',
     'img' : "images/2.jpg",
     'tag':'风景'
        },
        {
-    'text':'好看',
+    'text':'期待这个地方很久了……果然很棒， 在苍茫的北方大地上还有这样一处幽地，像是到了江南水乡，温婉多姿。夜景也很给力，终于可以远离喧闹，安安静静的休息一下了…………特别开心可以和心爱的人来这玩………',
     'collected_count':'90',
     'img' : 'images/3.jpg',
     'tag':'风景'
@@ -75,7 +74,7 @@ def author(useruid):
             'email': email,
             'icon': upload_path_icon
         })
-        Client.query.filter_by(uid=session['uid']).update({
+        Client.query.filter_by(uid=session['uid']).update({ #更新
         	'sign': sign
         	})
                     
