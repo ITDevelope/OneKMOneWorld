@@ -46,6 +46,7 @@ def author(useruid):
       } 
     shares = [{
     'text':'此次出行很开心 喜欢这种古镇的感觉 ',
+    'collected_count':'100',
     'img' : "images/2.jpg",
     'tag':'风景'
        },
