@@ -4,38 +4,38 @@
 	<div class="row">
 		<div class="col-twelve">
 				
-			<article class="{{view.style}}">
+			<article class="{{style}}">
 
 				{% block standard %}
 				{% endblock %}
 
 				<div class="primary-content">
 
-					<h1 class="page-title">{{blog.title}}</h1>
+					<!-- <h1 class="page-title">{{blog.title}}</h1> -->
 
 					<ul class="entry-meta">
-						<li class="date">{{blog.upload_time}}</li>
-						<li class="cat"><a href="{{url_for('author',authoruid=author.uid)}}">{{author.name}}</a></li>
+						<li class="date">{{blog.share_time}}</li>
+						<li class="cat"><a href="{{url_for('profile',uid=author_info.uid)}}">{{author_info.username}}</a></li>
 					</ul>
 
 					<!--markdown-->
-					{{blog.blog_markdown|safe}}
+					{{blog.text|safe}}
 			
 
-					<!--
+					
 					<p class="tags">
-						阅读 {{blog.view}} &nbsp;&nbsp;评论 {{blog.comment}}&nbsp;&nbsp;点赞 {{blog.like}}
+						阅读 {{blog.view_count}} &nbsp;&nbsp;评论 {{blog.comment_count}}&nbsp;&nbsp;点赞 {{blog.like_count}}
 					</p>
-				-->
+				
 
 					<div class="author-profile">
 						<!--作者头像-->
-						<img src="{{url_for('static',filename=author.icon)}}" alt="">
+						<img src="{{url_for('static',filename=author_info.icon)}}" alt="">
 
 						<div class="about">
-							<h4><a href="{{url_for('author',authoruid=author.uid)}}">{{author.name}}</a></h4>
+							<h4><a href="{{url_for('profile',uid=author_info.uid)}}">{{author_info.username}}</a></h4>
 
-							<p>{{author.sign}}</p>
+							<p>{{author_info.sign}}</p>
 
 						</div>
 					</div>
@@ -45,12 +45,12 @@
 
 				<div class="pagenav group">
 					<div class="prev-nav">
-						<a href="{{url_for('view',blog_id=blog.id-1)}}">
+						<a href="{{url_for('blog',bid=blog.share_id-1)}}">
 							<span>上一篇</span>
 						</a>
 					</div>
 					<div class="next-nav">
-						<a href="{{url_for('view',blog_id=blog.id+1)}}">
+						<a href="{{url_for('blog',bid=blog.share_id+1)}}">
 							<span>下一篇</span>
 						</a>
 					</div>
@@ -67,25 +67,25 @@
 		<div id="comments" class="row">
 			<div class="col-full">
 
-				<h3>{{comment_number}}条留言</h3>
+				<h3>{{blog.comment_count}}条留言</h3>
 				{% if comment_number != 0 %}
 				<!-- list -->
 				<ol class="commentlist">
 
-					{% for comment,author in comment_zip %}
+					{% for comment in comments %}
 					<li class="depth-1">
 						<!--头像设置-->
 						<div class="avatar">
-							<img width="50" height="50" class="avatar" src="{{url_for('static',filename=author.icon)}}" alt="">
+							<img width="50" height="50" class="avatar" src="{{url_for('static',filename=comment.icon)}}" alt="">
 						</div>
 
 						<div class="comment-content">
 
 							<div class="comment-info">
-								<a href="{{url_for('author',authoruid=author.uid)}}"><cite>{{author.name}}</cite></a>
+								<a href="{{url_for('profile',uid=comment.uid)}}"><cite>{{comment.username}}</cite></a>
 
 								<div class="comment-meta">
-									<time class="comment-time">{{comment.upload_time}}</time>
+									<time class="comment-time">{{comment.time}}</time>
 								</div>
 							</div>
 
@@ -105,7 +105,7 @@
 
 					<h3>留言栏</h3>
 
-					<form name="contactForm" id="contactForm" method="post" action="">
+					<form name="contactForm" id="contactForm" method="post" action="/comment/{{blog.share_id}}">
 						<fieldset>
 
 							<div class="message form-field">
@@ -116,7 +116,7 @@
 
 						</fieldset>
 					</form>
-
+					
 				</div>
 
 			</div>

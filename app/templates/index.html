@@ -46,22 +46,21 @@
 				</div>
 			</div>
 
-			{% for blog_data,user_data in blog_zip %}
+			{% for blog in blogs %}
 
-			{% if blog_data.blog_type == 1 %}
+			{% if blog.type == 'p' %}
 			<article class="brick entry format-standard animate-this">
 			{% else %}
 			<article class="brick entry format-audio animate-this">
 			{% endif %}
 				<div class="entry-thumb">
-					<a href="{{url_for('view',blog_id=blog_data.id)}}" class="thumb-link">
-						<img src="{{url_for('static',filename=blog_data.imag)}}" alt="building">
+					{% if blog.type == 'p' %}
+					<a href="{{url_for('blog',bid=blog.share_id)}}" class="thumb-link">
+						<img src="{{url_for('static',filename=blog.purl)}}" width="100%" alt="building">
 					</a>
-					{% if blog_data.blog_type == 2 %}
-					<!--音乐-->
-					<div class="audio-wrap">
-						<audio id="player" src="{{url_for('static',filename=blog_data.audio)}}" width="100%" height="42" controls="controls"></audio>
-					</div>
+					{% else %}
+					<!--视频-->
+					<video src="{{url_for('static',filename=blog.vurl)}}" controls="controls"></video>
 					{% endif %}
 				</div>
 
@@ -70,20 +69,24 @@
 
 						<div class="entry-meta">
 							<span class="cat-links">
-								{{blog_data.upload_time}}
-								<a href="{{url_for('author',authoruid=user_data.uid)}}">{{user_data.name}}</a>
+								{{blog.share_time}}
+								<a href="{{url_for('profile',uid=blog.uid)}}">{{blog.username}}</a>
 							</span>
 						</div>
 
-						<h1 class="entry-title"><a href="{{url_for('view',blog_id=blog_data.id)}}">{{blog_data.title}}</a></h1>
-						<p>{{blog_data.blog_markdown | safe | truncate(length=75)}}</p>
+						<a href="{{url_for('blog',bid=blog.share_id)}}"><p>{{blog.text | safe | truncate(length=75)}}</p></a>
+						<div>{{blog.tag}}</div>
 
 					</div>
-					<!--
+					
 					<div class="entry-excerpt">
-						阅读 200 &nbsp;&nbsp;评论 3&nbsp;&nbsp;点赞 3
+						阅读 {{blog.view_count}} &nbsp;&nbsp;评论 {{blog.comment_count}}&nbsp;&nbsp;点赞 {{blog.like_count}}
 					</div>
-				-->
+
+					<button onclick="like({{blog.share_id}})">点赞</button>
+					<button onclick="collect({{blog.share_id}})">收藏</button>
+					<button onclick="comments({{blog.share_id}})">评论</button>
+				
 				</div>
 
 			</article> <!-- 文章结束 -->
@@ -116,5 +119,36 @@
 
 
 </section>
+
+	
+	{{post_bgs}}
+
+	{{blogs}}
+
+	{{ilikes}}
+
+	
+
+	<script type="text/javascript">
+		function like(bid){
+			url = "/like/"+bid;
+			$.get(url, function(msg){
+				alert(msg);
+			});
+		}
+		function collect(bid){
+			url = "/collect/"+bid;
+			$.get(url, function(msg){
+				alert(msg);
+			});
+		}
+		function comments(bid){
+			url = "/comment/"+bid;
+			comment = {'comment':'1'};
+			$.post(url, comment, function(msg){
+				alert(msg);
+			});
+		}
+	</script>
 
 {% endblock %}

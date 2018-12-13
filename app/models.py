@@ -1,11 +1,12 @@
 from app import db
 from datetime import datetime
 from sqlalchemy.dialects.mysql import LONGTEXT
+from sqlalchemy.ext.declarative import declared_attr, AbstractConcreteBase
 
 # 用户信息表
 
 
-class User(db.Model):
+class User(AbstractConcreteBase, db.Model):
 
     id = db.Column(db.Integer, primary_key=True, unique=True)
     uid = db.Column(db.String(225), unique=True)
@@ -23,6 +24,15 @@ class User(db.Model):
     ID_number = db.Column(db.String(225))  # 身份证号
     register_date = db.Column(db.DateTime())  # 注册时间
 
+    @declared_attr
+    def __tablename__(cls):
+        return cls.__name__.lower()
+ 
+    @declared_attr
+    def __mapper_args__(cls):
+        # configurate subclasses about concrete table inheritance
+        return {'polymorphic_identity': cls.__name__,
+                'concrete': True} if cls.__name__ != "User" else {}
 
 # 客户信息表
 class Client(User):
@@ -74,21 +84,21 @@ class Record(db.Model):
 
     __tablename__ = 'records'
 
-    id = db.Column(db.Integer, unique=True)
-    record_id = db.Column(db.String(225), primary_key=True, unique=True)
+    record_id = db.Column(db.Integer, primary_key=True, autoincrement=True, unique=True)
     uid = db.Column(db.String(225))
     comment = db.Column(LONGTEXT)  # 评论内容
     like = db.Column(db.Integer)  # 是否点赞
     collect = db.Column(db.Integer)  # 是否收藏
     share_id = db.Column(db.String(225))  # 分享内容的id
+    time = db.Column(db.DateTime())
 
-    def __init__(self, record_id, uid, comment, like, collect, share_id):
-        self.record_id = record_id
+    def __init__(self, uid, comment, like, collect, share_id, time):
         self.uid = uid
         self.comment = comment
         self.like = like
         self.collect = collect
         self.share_id = share_id
+        self.time = time
 
         db.create_all()
 
@@ -97,10 +107,11 @@ class Record(db.Model):
 
 # 分享内容信息表
 
+from math import radians, cos, sin, asin, sqrt
 
 class Share(db.Model):
-    id = db.Column(db.Integer, unique=True)
-    share_id = db.Column(db.String(225), primary_key=True, unique=True)
+    share_id = db.Column(db.Integer, primary_key=True, autoincrement=True, unique=True)
+    uid = db.Column(db.String(225))
     text = db.Column(LONGTEXT)  # 描述
     tag = db.Column(db.String(225))  # 标签
     share_time = db.Column(db.DateTime())  # 发布时间
@@ -108,12 +119,13 @@ class Share(db.Model):
     comment_count = db.Column(db.Integer)  # 评论数
     like_count = db.Column(db.Integer)  # 点赞数
     collected_count = db.Column(db.Integer)  # 被收藏次数
-    gps = db.Column(db.String(225))  # 位置信息
+    lon = db.Column(db.DECIMAL(precision=15, scale=10))  # 经度
+    lat = db.Column(db.DECIMAL(precision=15, scale=10))  # 纬度
     pid = db.Column(db.String(225))  # 照片id
     vid = db.Column(db.String(225))  # 视频id
 
-    def __init__(self, share_id, text, tag, share_time, view_count, comment_count, like_count, collected_count, gps, pid, vid):
-        self.share_id = share_id
+    def __init__(self, uid, text, tag, share_time, view_count, comment_count, like_count, collected_count, lon, lat, pid, vid):
+        self.uid =uid
         self.text = text
         self.tag = tag
         self.share_time = share_time
@@ -121,7 +133,8 @@ class Share(db.Model):
         self.comment_count = comment_count
         self.like_count = like_count
         self.collected_count = collected_count
-        self.gps = gps
+        self.lon = lon
+        self.lat = lat
         self.pid = pid
         self.vid = vid
 
@@ -137,13 +150,11 @@ class Photo(db.Model):
 
     __tablename__ = 'photos'
 
-    id = db.Column(db.Integer, unique=True)
-    pid = db.Column(db.String(225), primary_key=True, unique=True)
+    pid = db.Column(db.Integer, primary_key=True, autoincrement=True, unique=True)
     psize = db.Column(db.String(225))  # 照片大小
     purl = db.Column(db.String(225))  # 照片的url
 
-    def __init__(self, pid, psize, purl):
-        self.pid = pid
+    def __init__(self, psize, purl):
         self.psize = psize
         self.purl = purl
 
@@ -159,14 +170,12 @@ class Video(db.Model):
 
     __tablename__ = 'videos'
 
-    id = db.Column(db.Integer, unique=True)
-    vid = db.Column(db.String(225), primary_key=True, unique=True)
+    vid = db.Column(db.Integer, primary_key=True, autoincrement=True, unique=True)
     vsize = db.Column(db.String(225))  # 视频大小
     vtime = db.Column(db.Time())  # 视频时长
     vurl = db.Column(db.String(225))  # 视频的url
 
-    def __init__(self, vid, vsize, vtime, vurl):
-        self.vid = vid
+    def __init__(self, vsize, vtime, vurl):
         self.vsize = vsize
         self.vtime = vtime
         self.vurl = vurl
